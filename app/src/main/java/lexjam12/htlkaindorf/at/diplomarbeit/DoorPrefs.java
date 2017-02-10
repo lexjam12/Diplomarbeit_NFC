@@ -7,10 +7,11 @@ import android.content.SharedPreferences;
  * Created by lexjam12 on 03.02.17.
  */
 
-
+//--------------------------------------------------------------------------------//
+//----------------Klasse zum bearbeiten der Türen die gespeichert werden----------//
+//--------------------------------------------------------------------------------//
 class DoorPrefs
 {
-
     /** This application's preferences label */
     private static final String PREFS_NAME = "com.our.package.DoorPrefs";
 
@@ -20,6 +21,9 @@ class DoorPrefs
     /** This application's settings editor*/
     private static SharedPreferences.Editor editor;
 
+    //--------------------------------------------------------------------------------//
+    //----------------Konstruktor-----------------------------------------------------//
+    //--------------------------------------------------------------------------------//
     /** Constructor takes an android.content.Context argument*/
     public DoorPrefs(Context context)
     {
@@ -38,6 +42,10 @@ class DoorPrefs
     /** The prefix for flattened user keys */
     public static final String KEY_PREFIX = "com.our.package.KEY";
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Gibt einen Key zurück-------------------------------------------//
+    //--------------------------------------------------------------------------------//
     /** Method to return a unique key for any field belonging to a given object
      * @param id of the object
      * @param fieldKey of a particular field belonging to that object
@@ -51,6 +59,10 @@ class DoorPrefs
     private static final String KEY_DOORNAME = "com.our.package.KEY_DOORNAME";
     private static final String KEY_DOORPASSWORD = "com.our.package.KEY_DOORPASSWORD";
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Speichert oder updated die Tür----------------------------------//
+    //--------------------------------------------------------------------------------//
     /** Store or Update */
     public void setDoor(Door door)
     {
@@ -64,6 +76,10 @@ class DoorPrefs
         editor.commit();
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Bekommt die Tür-------------------------------------------------//
+    //--------------------------------------------------------------------------------//
     /** Retrieve */
     public Door getDoor(int id)
     {
@@ -73,6 +89,9 @@ class DoorPrefs
         return new Door(id, name, password);
     }
 
+    //--------------------------------------------------------------------------------//
+    //----------------Löscht die Tür--------------------------------------------------//
+    //--------------------------------------------------------------------------------//
     /** Delete */
     public void deleteDoor(Door door)
     {

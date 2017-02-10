@@ -1,7 +1,6 @@
 package lexjam12.htlkaindorf.at.diplomarbeit;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Parcelable;
@@ -11,19 +10,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements DialogHelper.OnConnectButtonListener,
-                                                                DialogHelper.OnAddDoorsListener,
-                                                                DialogHelper.OnEditDoorsListener
+public class MainActivity extends AppCompatActivity implements  DialogHelper.OnAddDoorsListener,
+                                                                DialogHelper.OnEditDoorsListener,
+                                                                DialogHelper.OnConnectButtonListener
 {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
 
+    //--------------------------------------------------------------------------------//
+    //----------------Setzt alles was beim öffenen der App sein soll------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -31,34 +35,118 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
         setContentView(R.layout.activity_main);
         DoorPrefs prefs = new DoorPrefs(this);
 
-        int i=0;
-        Door door = prefs.getDoor(i);
 
+        //--------------------------------------------------------------------------------//
+        //----------------Setzt provesorisch den Status vom NFC---------------------------//
+        //--------------------------------------------------------------------------------//
 
         TextView mTextView = (TextView) findViewById(R.id.things);
-
-        TextView textname = (TextView)findViewById(R.id.name);
-        TextView textpass = (TextView)findViewById(R.id.pass);
-        textname.setText(""+door.getDoorName());
-        textpass.setText(""+door.getDoorPassword());
 
         NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (mNfcAdapter == null)
         {
-            // Stop here, we definitely need NFC
+            //----------------Falls Gerät NFC nicht unterstützt -> Abbruch--------------------//
             Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
         }
         if (!mNfcAdapter.isEnabled())
         {
-            mTextView.setText("NFC is disabled.");
+            setValue(R.id.things, "NFC is diabled");
         }
         else
         {
             mTextView.setText(R.string.connect);
         }
+
+
+        //--------------------------------------------------------------------------------//
+        //------------Mit letzter hinzugefügter Tür verbinden wenn neu gestartet----------//
+        //--------------------------------------------------------------------------------//
+
+        for(int i=15; i>=0; i--)
+        {
+            Door door = prefs.getDoor(i);
+            if (door.getDoorName().isEmpty())
+            {
+
+            }
+            else
+            {
+                Toast.makeText(this, "Name: " + door.getDoorName(), Toast.LENGTH_SHORT).show();
+                setValue(R.id.name, door.getDoorName());
+                setValue(R.id.pass, door.getDoorPassword());
+                break;
+            }
+        }
+
+
+        //--------------------------------------------------------------------------------//
+        //----------------Türen in den Spinner per Liste eintragen------------------------//
+        //--------------------------------------------------------------------------------//
+
+        int i=0;
+        Door door;
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        List<String> list = new ArrayList<>();
+        DoorPrefs doorPrefs = new DoorPrefs(this);
+
+        //----------------Do-Schleife schlecht, da ein Feld zu viel-----------------------//
+
+//        do
+//        {
+//            door = doorPrefs.getDoor(i);
+//            String temp = "Tür: "+door.getDoorName();
+//            System.out.println(""+door.getDoorName());
+//            list.add(temp);
+//            ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+//                    R.layout.spinner_item, list);
+//            adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+//            spinner.setAdapter(adapter);
+//            if(door.getDoorName().isEmpty())
+//            {
+//                System.out.println("---empty---");
+//                break;
+//            }
+//            else
+//                i++;
+//        }
+//        while(!door.getDoorName().isEmpty());
+
+        for(i=0; i<=10; i++)
+        {
+            door = doorPrefs.getDoor(i);
+
+            if(door.getDoorName().isEmpty())
+            {
+                System.out.println("------empty-----");
+                break;
+            }
+            else
+            {
+                String temp = "Tür: "+door.getDoorName();
+                System.out.println(""+door.getDoorName());
+                list.add(temp);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                        R.layout.spinner_item, list);
+                adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+                spinner.setAdapter(adapter);
+            }
+        }
     }
 
+    //--------------------------------------------------------------------------------//
+    //----------------Schließt, bzw. zerstört die Activity----------------------------//
+    //--------------------------------------------------------------------------------//
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //----------------Check i no ned ganz---------------------------------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     protected void onNewIntent(Intent intent)
     {
@@ -77,117 +165,10 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
         }
     }
 
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-    }
 
-    public void onRadioButtonClicked(View view)
-    {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        try
-        {
-            switch (view.getId())
-            {
-                case R.id.radio_button1:
-                    if (checked)
-                    {
-                        TextView t = (TextView)findViewById(R.id.bye);
-                        t.setText("door_open");
-                        break;
-                    }
-                case R.id.radio_button2:
-                    if (checked)
-                    {
-                        TextView t = (TextView)findViewById(R.id.bye);
-                        t.setText("door_close");
-                        break;
-                    }
-            }
-        }
-        catch (Exception ex)
-        {
-            Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void stateRequest(View view) throws Exception
-    {
-        DialogHelper connect = new DialogHelper(this);
-        connect.addDoors();
-
-
-        //Löschen
-
-//        DoorPrefs prefs = new DoorPrefs(this);
-//        int i;
-//        for(i=0; i<=10; i++) {
-//            Door door = prefs.getDoor(i);
-//            prefs.deleteDoor(door);
-//        }
-    }
-
-    public void connect(View view) throws Exception
-    {
-        DialogHelper doorList = new DialogHelper(this);
-        doorList.doorList();
-
-
-//        DoorPrefs prefs = new DoorPrefs(this);
-//        Door door = prefs.getDoor(4);
-//        System.out.println("Vierte: "+door.getDoorName());
-
-
-        try
-        {
-//            DialogHelper connect = new DialogHelper(this);
-//            connect.connectButton();
-//            connect.addDoors();
-//            connect.editDoors();
-        }
-        catch(Exception ex)
-        {
-            Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void editDoors(View view) throws Exception
-    {
-        try
-        {
-            Intent intent = new Intent(this, NFCHelper.class);
-            intent.putExtra("password", getValue(R.id.name));
-            intent.putExtra("toggle", getValue(R.id.bye));
-            if(getValue(R.id.name).isEmpty())
-                Toast.makeText(this, "Fehler: Passort eingeben", Toast.LENGTH_SHORT).show();
-            else if(getValue(R.id.bye).isEmpty())
-                Toast.makeText(this, "Fehler: Öffnen oder Schließen auswählen", Toast.LENGTH_SHORT).show();
-            else
-                startActivity(intent);
-        }
-        catch(Exception ex)
-        {
-            Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void setPreference(String key, String name)
-    {
-        SharedPreferences sp = getSharedPreferences("key", 0);
-        SharedPreferences.Editor sedt = sp.edit();
-        sedt.putString(key, name);
-        sedt.commit();
-    }
-
-    public String getPreference(String key, String valueIfNotExistend)
-    {
-        SharedPreferences sp = getSharedPreferences("key", 0);
-        String tValue = sp.getString(key, valueIfNotExistend);
-        return tValue;
-    }
-
+    //--------------------------------------------------------------------------------//
+    //----------------Erzeugt das Menü------------------------------------------------//
+    //--------------------------------------------------------------------------------//
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
@@ -195,6 +176,10 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
         return true;
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Setzt was die Menüpunkte machen sollen--------------------------//
+    //--------------------------------------------------------------------------------//
     public boolean onOptionsItemSelected(MenuItem item)
     {
         switch (item.getItemId())
@@ -229,9 +214,8 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
             case R.id.delete:
                 try
                 {
-                    DialogHelper dialogHelper = new DialogHelper(this);
-                    dialogHelper.deleteDoors();
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     e.printStackTrace();
                 }
@@ -240,8 +224,6 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
             case R.id.addDoor:
                 try
                 {
-                    DialogHelper doorList = new DialogHelper(this);
-                    doorList.doorList();
 //                    prefs = new DoorPrefs(this);
 //
 //                    Door door;
@@ -269,9 +251,6 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
                 return true;
 
             case R.id.selectDoor:
-                String name1 =getPreference("name2", "Not here");
-                String pass1 =getPreference("pass1", "Not here");
-                Toast.makeText(this, "Pass: "+pass1+" Name: "+name1, Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
@@ -279,6 +258,120 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
         }
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Die beiden RadioButtons "Öffnen", "Schließen"-------------------//
+    //--------------------------------------------------------------------------------//
+    public void onRadioButtonClicked(View view)
+    {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        try
+        {
+            switch (view.getId())
+            {
+                case R.id.radio_button1:
+                    if (checked)
+                    {
+                        setValue(R.id.bye, "door_open");
+                        break;
+                    }
+                case R.id.radio_button2:
+                    if (checked)
+                    {
+                        setValue(R.id.bye, "door_close");
+                        break;
+                    }
+            }
+        }
+        catch (Exception ex)
+        {
+            Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //----------------Der Button "Verbinden"------------------------------------------//
+    //--------------------------------------------------------------------------------//
+    public void connect(View view) throws Exception
+    {
+//        Intent intent = new Intent(this, SpinnerExample.class);
+//        startActivity(intent);
+        DialogHelper dialogHelper = new DialogHelper(this);
+        dialogHelper.connectButton();
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //----------------Der Button "Zustand"--------------------------------------------//
+    //--------------------------------------------------------------------------------//
+    public void stateRequest(View view) throws Exception
+    {
+        DialogHelper connect = new DialogHelper(this);
+        connect.addDoors();
+
+
+
+        //Löschen
+
+//        DoorPrefs prefs = new DoorPrefs(this);
+//        int i;
+//        for(i=0; i<=100; i++) {
+//            Door door = prefs.getDoor(i);
+//            prefs.deleteDoor(door);
+//        }
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //----------------Der Button Tür "Hinzufügen"-------------------------------------//
+    //--------------------------------------------------------------------------------//
+    public void editDoors(View view) throws Exception
+    {
+        try
+        {
+            Intent intent = new Intent(this, NFCHelper.class);
+            intent.putExtra("password", getValue(R.id.name));
+            intent.putExtra("toggle", getValue(R.id.bye));
+            if(getValue(R.id.name).isEmpty())
+                Toast.makeText(this, "Fehler: Passort eingeben", Toast.LENGTH_SHORT).show();
+            else if(getValue(R.id.bye).isEmpty())
+                Toast.makeText(this, "Fehler: Öffnen oder Schließen auswählen", Toast.LENGTH_SHORT).show();
+            else
+                startActivity(intent);
+        }
+        catch(Exception ex)
+        {
+            Toast.makeText(this, ex.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //----------------Inhalt von TextViews bekommen (Helfermethode)-------------------//
+    //--------------------------------------------------------------------------------//
+    private String getValue(int id)
+    {
+        TextView textView = (TextView)findViewById(id);
+        String text = textView.getText().toString();
+        return text;
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //----------------Inhalt von TextViews beschreiben (Helfermethode)----------------//
+    //--------------------------------------------------------------------------------//
+    private void setValue(int id, String text)
+    {
+        TextView textView = (TextView)findViewById(id);
+        textView.setText(text);
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //----------------Ein Listener auf den Dialog connectButton-----------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     public void onConnectButtonListener(String editText)
     {
@@ -296,16 +389,21 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
         System.out.println(door.getDoorPassword());
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Ein Listener auf den Dialog addDoors----------------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     public void onAddDoorsListener(String editTextName, String editTextPass)
     {
         TextView textViewName = (TextView)findViewById(R.id.name);
         TextView textViewPass = (TextView)findViewById(R.id.pass);
 
-        DoorPrefs prefs = new DoorPrefs(this);
-        Door door;
         int i=0;
-        Door door2 = prefs.getDoor(3);
+        System.out.println("Es kommt rein");
+        DoorPrefs prefs = new DoorPrefs(this);
+
+        Door door;
 
         if(editTextName.isEmpty() || editTextPass.isEmpty())
         {
@@ -323,16 +421,19 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
             while(!door.getDoorName().isEmpty());
 
             System.out.println(""+door.getId());
-            System.out.println("Door 3: "+door2.getDoorName());
             textViewName.setText(editTextName);
             textViewPass.setText(editTextPass);
             door.setDoorPassword("" + textViewPass.getText());
             door.setDoorName("" + textViewName.getText());
         }
-
         prefs.setDoor(door);
+        recreate();
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Ein Listener auf den Dialog editDoors---------------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     public void onEditDoorsListener(String editTextName, String editTextPass)
     {
@@ -359,12 +460,5 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnCo
         door.setDoorName(""+textViewName.getText());
 
         prefs.setDoor(door);
-    }
-
-    private String getValue(int id)
-    {
-        TextView textView = (TextView)findViewById(id);
-        String text = textView.getText().toString();
-        return text;
     }
 }

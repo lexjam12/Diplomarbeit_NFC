@@ -4,9 +4,12 @@ package lexjam12.htlkaindorf.at.diplomarbeit;
  * Created by lexjam12 on 27.01.17.
  */
 
+
+//--------------------------------------------------------------------------------//
+//----------------DatenKlasse von der Tür-----------------------------------------//
+//--------------------------------------------------------------------------------//
 public class Door
 {
-
     private int id; // used for object storage
     private String doorName;
     private String doorPassword;

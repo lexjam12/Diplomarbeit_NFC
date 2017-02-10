@@ -1,6 +1,7 @@
 package lexjam12.htlkaindorf.at.diplomarbeit;
 
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -23,7 +24,10 @@ public class NFCHelper extends AppCompatActivity
 {
     NfcAdapter nfcAdapter;
 
-    private void setText(int id, String text)
+    //--------------------------------------------------------------------------------//
+    //----------------Inhalt von TextViews beschreiben (Helfermethode)----------------//
+    //--------------------------------------------------------------------------------//
+    private void setValue(int id, String text)
     {
         try
         {
@@ -36,6 +40,9 @@ public class NFCHelper extends AppCompatActivity
         }
     }
 
+    //--------------------------------------------------------------------------------//
+    //----------------Setzt alles was beim öffenen der App sein soll------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,10 +54,14 @@ public class NFCHelper extends AppCompatActivity
         Intent intent = getIntent();
         final String password = intent.getStringExtra("password");
         final String toggle = intent.getStringExtra("toggle");
-        setText(R.id.password, password);
-        setText(R.id.toggle, toggle);
+        setValue(R.id.password, password);
+        setValue(R.id.toggle, toggle);
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Schließt, bzw. zerstört die Activity----------------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     protected void onDestroy()
     {
@@ -73,10 +84,19 @@ public class NFCHelper extends AppCompatActivity
         disableForegroundDispatchSystem();
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Scheibt auf NFC-Karte-------------------------------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
+        ProgressDialog dialog=new ProgressDialog(this);
+        dialog.setMessage("Warten");
+        dialog.setCancelable(true);
+        dialog.setInverseBackgroundForced(false);
+        dialog.show();
 
         if (intent.hasExtra(NfcAdapter.EXTRA_TAG))
         {
@@ -94,7 +114,11 @@ public class NFCHelper extends AppCompatActivity
         }
     }
 
-    private void enableForegroundDispatchSystem()  //wenn NFC Tag erkannt wird, wird diese App genutzt
+
+    //--------------------------------------------------------------------------------//
+    //----------------Falls NFC erkannt wird, wird nicht Karte gelesen----------------//
+    //--------------------------------------------------------------------------------//
+    private void enableForegroundDispatchSystem()
     {
         Intent intent = new Intent(this, NFCHelper.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
@@ -102,11 +126,19 @@ public class NFCHelper extends AppCompatActivity
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Karte wird gelesen----------------//
+    //--------------------------------------------------------------------------------//
     private void disableForegroundDispatchSystem()
     {
         nfcAdapter.disableForegroundDispatch(this);
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Formatiert die NFC-Karte----------------------------------------//
+    //--------------------------------------------------------------------------------//
     private void formatTag(Tag tag, NdefMessage ndefMessage)
     {
         try
