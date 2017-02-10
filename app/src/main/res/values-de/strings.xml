@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Diplom-Arbeit</string>
+    <string name="button_connect">Verbinden</string>
+    <string name="button_open">Öffnen</string>
+    <string name="button_close">Schließen</string>
+    <string name="button_state">Zustand</string>
+    <string name="button_settings">Einstellungen</string>
+    <string name="button_info">Info</string>
+    <string name="info">Information</string>
+    <string name="info_name">Entwickler: Lexner Jakob</string>
+    <string name="info_version">Aktuelle Version: 0.0.5</string>
+    <string name="settings">Einstellungen</string>
+    <string name="button_settings_add">Tür hinzufügen</string>
+    <string name="button_settings_getNFC">NFC Status</string>
+    <string name="stateRequest">Zustand der verbunden Tür</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="whichDoor">Mit welcher Tür wollen Sie sich verbinden?</string>
+    <string name="connect">Verbinden</string>
+    <string name="connectCancel">Verbinden mit Tür abgebrochen</string>
+    <string name="ok">OK</string>
+    <string name="nfcOn">NFC ist aktiviert</string>
+    <string name="nfcOff">NFC ist deaktiviert</string>
+    <string name="version_history">Versionsverlauf</string>
+    <string name="button_edit">Türen bearbeiten</string>
+    <string name="things">Sachen</string>
+    <string name="about">Über</string>
+</resources>

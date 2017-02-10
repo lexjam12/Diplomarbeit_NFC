@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/button_getNFC"
+        android:title="@string/button_settings_getNFC"/>
+    <item android:id="@+id/openInfo"
+        android:title="@string/button_info" />
+    <item android:id="@+id/delete"
+        android:title="Passwort löschen" />
+    <item android:id="@+id/addDoor"
+        android:title="Tür hinzufügen" />
+    <item android:id="@+id/selectDoor"
+        android:title="Tür 1" />
+</menu>

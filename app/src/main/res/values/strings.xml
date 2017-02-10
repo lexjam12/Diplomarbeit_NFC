@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Thesis</string>
+    <string name="button_connect">Connect</string>
+    <string name="button_open">Open</string>
+    <string name="button_close">Close</string>
+    <string name="button_state">State</string>
+    <string name="button_settings">Settings</string>
+    <string name="button_info">Info</string>
+    <string name="info">Information</string>
+    <string name="info_name">Developer: Lexner Jakob</string>
+    <string name="info_version">Current Version: 0.0.5</string>
+    <string name="settings">Settings</string>
+    <string name="button_settings_add">Add Door</string>
+    <string name="button_settings_getNFC">NFC Status</string>
+    <string name="cancel">Cancel</string>
+    <string name="whichDoor">Which door you want to connect?</string>
+    <string name="stateRequest">State of the connected door</string>
+    <string name="connect">Connect</string>
+    <string name="connectCancel">Cancel to connect with door</string>
+    <string name="ok">OK</string>
+    <string name="nfcOn">NFC is activated</string>
+    <string name="nfcOff">NFC is deactivated</string>
+    <string name="version_history">Version History</string>
+    <string name="button_edit">Edit doors</string>
+    <string name="things">Things</string>
+    <string name="about">About</string>
+</resources>
