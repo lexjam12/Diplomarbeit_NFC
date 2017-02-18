@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     style="?android:attr/spinnerItemStyle"
     android:ellipsize="marquee"
-    android:textSize="35sp"
-    android:textColor="#FFFFFFFF"
+    android:textSize="40sp"
+    android:textStyle="bold"
+    android:textColor="#000000"
     android:textAlignment="center">
 </TextView>

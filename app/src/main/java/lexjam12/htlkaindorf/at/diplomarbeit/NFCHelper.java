@@ -1,7 +1,6 @@
 package lexjam12.htlkaindorf.at.diplomarbeit;
 
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -23,6 +22,7 @@ import java.util.Locale;
 public class NFCHelper extends AppCompatActivity
 {
     NfcAdapter nfcAdapter;
+    private static final String TAG = NFCHelper.class.getSimpleName();
 
     //--------------------------------------------------------------------------------//
     //----------------Inhalt von TextViews beschreiben (Helfermethode)----------------//
@@ -40,8 +40,15 @@ public class NFCHelper extends AppCompatActivity
         }
     }
 
+    private String getValue(int id)
+    {
+        TextView textView = (TextView)findViewById(id);
+        String text = textView.getText().toString();
+        return text;
+    }
+
     //--------------------------------------------------------------------------------//
-    //----------------Setzt alles was beim öffenen der App sein soll------------------//
+    //----------------Setzt alles was beim öffnen der App sein soll------------------//
     //--------------------------------------------------------------------------------//
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,9 +60,11 @@ public class NFCHelper extends AppCompatActivity
 
         Intent intent = getIntent();
         final String password = intent.getStringExtra("password");
-        final String toggle = intent.getStringExtra("toggle");
-        setValue(R.id.password, password);
-        setValue(R.id.toggle, toggle);
+        final String status = intent.getStringExtra("status");
+        final String name = intent.getStringExtra("name");
+        setValue(R.id.nfc_pass, password);
+        setValue(R.id.nfc_status, status);
+        setValue(R.id.nfc_name, name);
     }
 
 
@@ -66,8 +75,6 @@ public class NFCHelper extends AppCompatActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        Intent intent = new Intent(this, MainActivity.class);
-        System.out.println("Destroied");
     }
 
     @Override
@@ -92,25 +99,41 @@ public class NFCHelper extends AppCompatActivity
     protected void onNewIntent(Intent intent)
     {
         super.onNewIntent(intent);
-        ProgressDialog dialog=new ProgressDialog(this);
-        dialog.setMessage("Warten");
-        dialog.setCancelable(true);
-        dialog.setInverseBackgroundForced(false);
-        dialog.show();
 
         if (intent.hasExtra(NfcAdapter.EXTRA_TAG))
         {
             Toast.makeText(this, "NFC erkannt!", Toast.LENGTH_SHORT).show();
 
-            TextView t1 = (TextView)findViewById(R.id.password);
-            TextView t2 = (TextView)findViewById(R.id.toggle);
-            String p = t1.getText().toString();
-            String t = t2.getText().toString();
+            String pass = getValue(R.id.nfc_pass);
+            String status = getValue(R.id.nfc_status);
+            String name = getValue(R.id.nfc_name);
 
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            NdefMessage ndefMessage = createNdefMessage(""+p+t);
+            NdefMessage ndefMessage = createNdefMessage(""+pass+status);
 
             writeNdefMessage(tag, ndefMessage);
+
+            Intent intentset = new Intent(this, MainActivity.class);
+
+            Door door;
+            DoorPrefs doorPrefs = new DoorPrefs(this);
+            int i;
+            for(i=0; i<=9; i++)
+            {
+                door = doorPrefs.getDoor(i);
+                if(door.getDoorName().equals(name))
+                {
+                    Log.i(TAG, "STATUS: NFCHELPER: name: "+door.getDoorName());
+                    door.setDoorStatus(status);
+                    Log.i(TAG, "STATUS: NFCHELPER: status: "+door.getDoorStatus());
+                    doorPrefs.setDoor(door);
+                    break;
+                }
+                else
+                    Log.i(TAG, "STATUS: NFCHELPER: noname: "+door.getDoorName());
+            }
+            Log.i(TAG, "STATUS: NFCHELPER: Daten übergeben");
+            startActivity(intentset);
         }
     }
 

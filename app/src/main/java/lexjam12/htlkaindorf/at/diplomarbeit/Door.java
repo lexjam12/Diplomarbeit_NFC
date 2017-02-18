@@ -13,12 +13,14 @@ public class Door
     private int id; // used for object storage
     private String doorName;
     private String doorPassword;
+    private String doorStatus;
 
-    public Door(int id, String userName, String doorPassword)
+    public Door(int id, String userName, String doorPassword, String doorStatus)
     {
         this.id = id;
         this.doorName = userName;
         this.doorPassword = doorPassword;
+        this.doorStatus = doorStatus;
     }
 
     public int getId()
@@ -36,6 +38,11 @@ public class Door
         return doorPassword;
     }
 
+    public String getDoorStatus()
+    {
+        return doorStatus;
+    }
+
     public void setId(int id)
     {
         this.id = id;
@@ -49,5 +56,10 @@ public class Door
     public void setDoorPassword(String doorPassword)
     {
         this.doorPassword = doorPassword;
+    }
+
+    public void setDoorStatus(String doorStatus)
+    {
+        this.doorStatus = doorStatus;
     }
 }

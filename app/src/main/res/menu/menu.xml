@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/button_getNFC"
         android:title="@string/button_settings_getNFC"/>
-    <item android:id="@+id/openInfo"
+    <item android:id="@+id/menu_openInfo"
         android:title="@string/button_info" />
-    <item android:id="@+id/delete"
-        android:title="Passwort löschen" />
-    <item android:id="@+id/addDoor"
-        android:title="Tür hinzufügen" />
-    <item android:id="@+id/selectDoor"
-        android:title="Tür 1" />
+    <item android:id="@+id/menu_list"
+        android:title="Türen mit ID auflisten" />
+    <item android:id="@+id/menu_delete"
+        android:title="Alle Türen löschen" />
+    <item android:id="@+id/menu_status"
+        android:title="Status der Tür" />
 </menu>

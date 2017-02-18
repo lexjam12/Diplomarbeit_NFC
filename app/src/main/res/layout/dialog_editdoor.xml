@@ -15,7 +15,7 @@
             android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name der Tür"
+            android:hint="Neuer Name der Tür"
             android:id="@+id/doorName_edit"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Passwort der Tür"
+            android:hint="Neues Passwort der Tür"
             android:id="@+id/doorPassword_edit"/>
     </android.support.design.widget.TextInputLayout>
 

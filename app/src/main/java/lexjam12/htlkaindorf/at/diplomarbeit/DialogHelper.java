@@ -3,14 +3,18 @@ package lexjam12.htlkaindorf.at.diplomarbeit;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.nfc.Tag;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -19,6 +23,7 @@ import android.widget.Toast;
 public class DialogHelper extends AppCompatActivity
 {
     private final Context context;
+    private static final String TAG = DialogHelper.class.getSimpleName();
 
     //--------------------------------------------------------------------------------//
     //----------------Konstruktor-----------------------------------------------------//
@@ -29,9 +34,9 @@ public class DialogHelper extends AppCompatActivity
 
         try
         {
-            onConnectButtonListener = (OnConnectButtonListener) context;
             onAddDoorsListener = (OnAddDoorsListener) context;
             onEditDoorsListener = (OnEditDoorsListener) context;
+            onDeleteDoorsListener = (OnDeleteDoorsListener)context;
         }
         catch(ClassCastException ex)
         {
@@ -93,40 +98,6 @@ public class DialogHelper extends AppCompatActivity
 
 
     //--------------------------------------------------------------------------------//
-    //----------------Dialog fragt ob bearbeiten oder hinzufügen----------------------//
-    //--------------------------------------------------------------------------------//
-    public Dialog editAddDoors()
-    {
-        AlertDialog.Builder builder;
-        builder = new AlertDialog.Builder(context);
-
-        builder.setTitle("Tür hinzufügen oder bearbeiten?");
-        builder.setPositiveButton("Tür hinzufügen", new DialogInterface.OnClickListener()
-        {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                addDoors();
-                dialog.dismiss();
-            }
-        });
-        builder.setNegativeButton("Tür bearbeiten", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                editDoors();
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-        return builder.create();
-    }
-
-
-    //--------------------------------------------------------------------------------//
     //----------------Listener von addDoor--------------------------------------------//
     //--------------------------------------------------------------------------------//
     private final OnAddDoorsListener onAddDoorsListener;
@@ -138,7 +109,7 @@ public class DialogHelper extends AppCompatActivity
 
 
     //--------------------------------------------------------------------------------//
-    //----------------Dialog der Türe hinzufügt--------------------------------------//
+    //----------------Dialog der Türen hinzufügt--------------------------------------//
     //--------------------------------------------------------------------------------//
     public Dialog addDoors()
     {
@@ -182,6 +153,13 @@ public class DialogHelper extends AppCompatActivity
         void onEditDoorsListener(String editTextName, String editTextPass);
     }
 
+    private final OnDeleteDoorsListener onDeleteDoorsListener;
+
+    public interface OnDeleteDoorsListener
+    {
+        void onDeleteDoorsListener(String editTextName, String editTextPass);
+    }
+
 
     //--------------------------------------------------------------------------------//
     //----------------Dialog der Türen bearbeitet-------------------------------------//
@@ -206,41 +184,11 @@ public class DialogHelper extends AppCompatActivity
                 onEditDoorsListener.onEditDoorsListener(editText_name.getText().toString(), editText_pass.getText().toString());
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-        {
+        builder.setNeutralButton("Löschen", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-        return builder.create();
-    }
-
-
-    //--------------------------------------------------------------------------------//
-    //----------------Dialog der Türen löscht-----------------------------------------//
-    //--------------------------------------------------------------------------------//
-    public Dialog deleteDoors()
-    {
-        AlertDialog.Builder builder;
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_deletedoor, null);
-        final EditText editText_name = (EditText)view.findViewById(R.id.doorName_edit);
-        final EditText editText_pass = (EditText)view.findViewById(R.id.doorPassword_add);
-        builder = new AlertDialog.Builder(context);
-
-        builder.setTitle("Tür bearbeiten");
-        builder.setView(view);
-        builder.setPositiveButton("Bearbeiten", new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-
-                dialog.dismiss();
+                onDeleteDoorsListener.onDeleteDoorsListener(editText_name.getText().toString(), editText_pass.getText().toString());
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
@@ -275,54 +223,6 @@ public class DialogHelper extends AppCompatActivity
                 EditText editText = (EditText)findViewById(R.id.nfc_tag);
                 String nfc = editText.getText().toString();
                 Toast.makeText(context, ""+nfc, Toast.LENGTH_SHORT).show();
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-        return builder.create();
-    }
-
-
-    //--------------------------------------------------------------------------------//
-    //----------------Listener von connectButton-------------------------------------------//
-    //--------------------------------------------------------------------------------//
-    private final OnConnectButtonListener onConnectButtonListener;
-
-    public interface OnConnectButtonListener
-    {
-        void onConnectButtonListener(String editText);
-    }
-
-
-    //--------------------------------------------------------------------------------//
-    //----------------Dialog der nach Passwort fragt----------------------------------//
-    //--------------------------------------------------------------------------------//
-    public Dialog connectButton()
-    {
-        AlertDialog.Builder builder;
-        final LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_connectbutton, null);
-        final EditText editText = (EditText)view.findViewById(R.id.nfc_tag);
-
-        builder = new AlertDialog.Builder(context);
-        builder.setTitle("Passwort");
-        builder.setView(view);
-
-        builder.setPositiveButton("Bestätigen", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                onConnectButtonListener.onConnectButtonListener(editText.getText().toString());
-            }
-        });
-
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                Toast.makeText(context, R.string.connectCancel, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

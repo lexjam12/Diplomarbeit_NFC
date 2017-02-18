@@ -58,6 +58,7 @@ class DoorPrefs
 
     private static final String KEY_DOORNAME = "com.our.package.KEY_DOORNAME";
     private static final String KEY_DOORPASSWORD = "com.our.package.KEY_DOORPASSWORD";
+    private static final String KEY_DOORSTATUS = "com.our.package.KEY_DOORSTATUS";
 
 
     //--------------------------------------------------------------------------------//
@@ -72,6 +73,7 @@ class DoorPrefs
         int id = door.getId();
         editor.putString(getFieldKey(id, KEY_DOORNAME),door.getDoorName());
         editor.putString(getFieldKey(id, KEY_DOORPASSWORD),door.getDoorPassword());
+        editor.putString(getFieldKey(id, KEY_DOORSTATUS),door.getDoorStatus());
 
         editor.commit();
     }
@@ -85,8 +87,9 @@ class DoorPrefs
     {
         String name = settings.getString(getFieldKey(id, KEY_DOORNAME), "" ); // default value
         String password = settings.getString(getFieldKey(id, KEY_DOORPASSWORD), ""); // default value
+        String status = settings.getString(getFieldKey(id, KEY_DOORSTATUS), ""); // default value
 
-        return new Door(id, name, password);
+        return new Door(id, name, password, status);
     }
 
     //--------------------------------------------------------------------------------//
@@ -101,6 +104,7 @@ class DoorPrefs
         int id = door.getId();
         editor.remove( getFieldKey(id, KEY_DOORNAME));
         editor.remove( getFieldKey(id, KEY_DOORPASSWORD));
+        editor.remove( getFieldKey(id, KEY_DOORSTATUS));
 
         editor.commit();
     }
