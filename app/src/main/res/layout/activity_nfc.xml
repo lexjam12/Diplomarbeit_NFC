@@ -5,9 +5,24 @@
     android:weightSum="1">
 
     <TextView
+        android:id="@+id/detected"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <TextView
+        android:id="@+id/writen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <TextView
+        android:id="@+id/formatable"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Warten auf das Verbinden mit der Tür"
+        android:text="@string/wait"
         android:textSize="30dp"
         android:textColor="#000000"/>
 

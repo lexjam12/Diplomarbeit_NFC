@@ -14,7 +14,7 @@
             android:layout_margin="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name der Tür"
+            android:hint="@string/name"
             android:id="@+id/doorName_add"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -26,11 +26,11 @@
 
         <EditText
             android:layout_margin="16dp"
-            android:textColorHint="@color/colorPrimary"
+            android:textColorHint="@color/blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="Passwort der Tür"
+            android:hint="@string/password"
             android:id="@+id/doorPassword_add"/>
     </android.support.design.widget.TextInputLayout>
 </LinearLayout>

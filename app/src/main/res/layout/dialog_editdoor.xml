@@ -27,7 +27,7 @@
 
         <EditText
             android:layout_margin="16dp"
-            android:textColorHint="@color/colorPrimary"
+            android:textColorHint="@color/blue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"

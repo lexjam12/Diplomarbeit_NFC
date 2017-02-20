@@ -22,7 +22,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:spinnerMode="dialog"
-            android:background="@drawable/buttonshape_withoutstroke"
+            android:background="@drawable/shape_button_withoutstroke"
             style="?android:attr/textViewStyle">
         </Spinner>
 
@@ -49,23 +49,18 @@
 
         <TextView
             android:id="@+id/doorstate"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_height="0dp"
+            android:layout_width="0dp"/>
 
         <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
             android:id="@+id/name"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:id="@+id/pass"/>
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:id="@+id/things"/>
 
         <LinearLayout
             android:layout_width="match_parent"

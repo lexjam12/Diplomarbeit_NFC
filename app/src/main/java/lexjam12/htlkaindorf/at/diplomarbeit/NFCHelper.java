@@ -12,6 +12,7 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +29,7 @@ public class NFCHelper extends AppCompatActivity
 {
     NfcAdapter nfcAdapter;
     private static final String TAG = NFCHelper.class.getSimpleName();
+    Intent setIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -94,12 +96,19 @@ public class NFCHelper extends AppCompatActivity
             final String status = getintent.getStringExtra("status");
             final String name = getintent.getStringExtra("name");
 
-            toastHelper(getResources().getString(R.string.nfc_detected), R.drawable.toast_blue);
+            setIntent = new Intent(this, MainActivity.class);
+            TextView detected = (TextView)findViewById(R.id.detected);
+            TextView writen = (TextView)findViewById(R.id.writen);
+            TextView formatable = (TextView)findViewById(R.id.formatable);
+            detected.setText("detected");
+            setIntent.putExtra("detected", detected.getText());
 
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             NdefMessage ndefMessage = createNdefMessage(""+password + status);
 
             writeNdefMessage(tag, ndefMessage);
+            setIntent.putExtra("writen", writen.getText());
+            setIntent.putExtra("formatabe", formatable.getText());
 
             Log.i(TAG, "CONNECT: Daten auf NFC Karte geschrieben");
             Log.i(TAG, "CONNECT: Passwort: "+password);
@@ -125,6 +134,7 @@ public class NFCHelper extends AppCompatActivity
                     Log.i(TAG, "STATUS: NFCHELPER: noname: " + door.getDoorName());
             }
             Log.i(TAG, "STATUS: NFCHELPER: Daten übergeben");
+            startActivity(setIntent);
             finish();
         }
     }
@@ -162,8 +172,8 @@ public class NFCHelper extends AppCompatActivity
 
             if (ndefFormatable == null)
             {
-                toastHelper(getResources().getString(R.string.not_formatable), R.drawable.toast_red);
-//                Toast.makeText(this, "Tag is not ndef formatable!", Toast.LENGTH_SHORT).show();
+                TextView textView = (TextView)findViewById(R.id.formatable);
+                textView.setText("not_formatable");
                 return;
             }
 
@@ -199,7 +209,8 @@ public class NFCHelper extends AppCompatActivity
 
                 if (!ndef.isWritable())
                 {
-                    toastHelper(getResources().getString(R.string.tag_not_writen), R.drawable.toast_red);
+                    TextView textView = (TextView)findViewById(R.id.writen);
+                    textView.setText("not_writen");
 
                     ndef.close();
                     return;
@@ -208,7 +219,8 @@ public class NFCHelper extends AppCompatActivity
                 ndef.writeNdefMessage(ndefMessage);
                 ndef.close();
 
-                toastHelper(getResources().getString(R.string.tag_writen), R.drawable.toast_green);
+                TextView textView = (TextView)findViewById(R.id.writen);
+                textView.setText("writen");
             }
 
         }

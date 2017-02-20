@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,49 +56,55 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
         //--------------------------------------------------------------------------------//
         //----------------Setzt provesorisch den Status vom NFC---------------------------//
         //--------------------------------------------------------------------------------//
-
-        if (mNfcAdapter == null)
+        try
         {
-            //----------------Falls Gerät NFC nicht unterstützt -> Abbruch--------------------//
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_main), getResources().getString(R.string.no_nfc),
-                    Snackbar.LENGTH_INDEFINITE).setAction(getResources().getString(R.string.close),
-                    new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View view)
+            if (mNfcAdapter == null)
+            {
+                //----------------Falls Gerät NFC nicht unterstützt -> Abbruch--------------------//
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_main), getResources().getString(R.string.no_nfc),
+                        Snackbar.LENGTH_INDEFINITE).setAction(getResources().getString(R.string.close),
+                        new View.OnClickListener()
                         {
-                            onDestroy();
-                        }
-                    });
-            View sbView = snackbar.getView();
-            snackbar.setActionTextColor(getResources().getColor(R.color.white, null));
-            sbView.setBackgroundColor(getResources().getColor(R.color.red, null));
-            snackbar.show();
+                            @Override
+                            public void onClick(View view)
+                            {
+                                onDestroy();
+                            }
+                        });
+                View sbView = snackbar.getView();
+                snackbar.setActionTextColor(getResources().getColor(R.color.white, null));
+                sbView.setBackgroundColor(getResources().getColor(R.color.red, null));
+                snackbar.show();
 
-            Log.i(TAG, "ONCREATE: NFC: Gerät besitzt kein NFC");
-        }
-        if (!mNfcAdapter.isEnabled())
-        {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_main), getResources().getString(R.string.nfc_off),
-                    Snackbar.LENGTH_INDEFINITE).setAction(getResources().getString(R.string.retry),
-                    new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View view)
+                Log.i(TAG, "ONCREATE: NFC: Gerät besitzt kein NFC");
+            }
+            if (!mNfcAdapter.isEnabled())
+            {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.activity_main), getResources().getString(R.string.nfc_off),
+                        Snackbar.LENGTH_INDEFINITE).setAction(getResources().getString(R.string.retry),
+                        new View.OnClickListener()
                         {
-                            recreate();
-                        }
-                    });
-            View sbView = snackbar.getView();
-            snackbar.setActionTextColor(getResources().getColor(R.color.white, null));
-            sbView.setBackgroundColor(getResources().getColor(R.color.red, null));
-            snackbar.show();
+                            @Override
+                            public void onClick(View view)
+                            {
+                                recreate();
+                            }
+                        });
+                View sbView = snackbar.getView();
+                snackbar.setActionTextColor(getResources().getColor(R.color.white, null));
+                sbView.setBackgroundColor(getResources().getColor(R.color.red, null));
+                snackbar.show();
 
-            Log.i(TAG, "ONCREATE: NFC: NFC ist ausgeschlatet");
+                Log.i(TAG, "ONCREATE: NFC: NFC ist ausgeschlatet");
+            }
+            else
+            {
+                Log.i(TAG, "ONCREATE: NFC: NFC ist eingeschaltet");
+            }
         }
-        else
+        catch(Exception ex)
         {
-            Log.i(TAG, "ONCREATE: NFC: NFC ist eingeschaltet");
+            Toast.makeText(this, ""+ex.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -135,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         list = new ArrayList<>();
         doorPrefs = new DoorPrefs(this);
+        int doorEmpty=0;
 
         for (i = 0; i <= 10; i++)
         {
@@ -142,17 +151,83 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
 
             if (!door.getDoorName().isEmpty())
             {
-                String temp = getResources().getString(R.string.textview_doorname)+" "+door.getDoorName();
+                String temp = getResources().getString(R.string.textview_doorname) + " " + door.getDoorName();
                 list.add(temp);
                 Collections.sort(list);
                 adapter = new ArrayAdapter(this, R.layout.spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                 spinner.setAdapter(adapter);
+                TextView textView = (TextView)findViewById(R.id.spinner_textfield);
+                textView.getLayoutParams().height = 0;
+            }
+            else
+            {
+                if(doorEmpty>9)
+                {
+                    setValue(R.id.spinner_textfield, "Bitte Tür eintragen");
+                    Log.i(TAG, "ONCREATE: SPINNER: Keine Türen");
+                    spinner.getLayoutParams().height = 0;
+                }
+                else
+                {
+                    doorEmpty++;
+                }
             }
         }
         Log.i(TAG, "ONCREATE: SPINNER: Türen in Spinner eingetragen");
         Log.i(TAG, "ONCREATE: ------------------------------------------------");
 
+
+        //--------------------------------------------------------------------------------//
+        //----------------Snackbar Info für Übertragung-----------------------------------//
+        //--------------------------------------------------------------------------------//
+        Intent intent = getIntent();
+        final String writen = intent.getStringExtra("writen");
+        final String formatable = intent.getStringExtra("formatable");
+        final String detected = intent.getStringExtra("detected");
+        Log.i(TAG, "NFC: detected: "+detected);
+        Log.i(TAG, "NFC: writen: "+writen);
+
+        if(detected == null)
+        {
+            Log.i(TAG, "NFC: nothing detected");
+        }
+        else if(detected.contentEquals("detected"))
+        {
+            View mainview = findViewById(R.id.activity_main);
+            Snackbar snackbar = Snackbar.make(mainview, getResources().getString(R.string.nfc_detected)
+                    , Snackbar.LENGTH_LONG);
+            View view = snackbar.getView();
+            view.setBackgroundColor(getResources().getColor(R.color.blue, null));
+            TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+            tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            snackbar.setCallback(new Snackbar.Callback()
+            {
+                @Override
+                public void onDismissed(Snackbar snackbar, int event)
+                {
+                    if(writen.equals("writen"))
+                    {
+                        snackbarHelper(getResources().getString(R.string.tag_writen),
+                                getResources().getColor(R.color.green, null));
+                    }
+                    else if(writen.equals("not_writen"))
+                    {
+                        snackbarHelper(getResources().getString(R.string.tag_not_writen),
+                                getResources().getColor(R.color.red, null));
+                    }
+                    snackbarHelper(getResources().getString(R.string.tag_writen),
+                            getResources().getColor(R.color.green, null));
+                    super.onDismissed(snackbar, event);
+                }
+            });
+            snackbar.show();
+        }
+        else if(formatable.equals("not_formatable"))
+        {
+            snackbarHelper(getResources().getString(R.string.not_formatable),
+                    getResources().getColor(R.color.red, null));
+        }
     }
 
     //--------------------------------------------------------------------------------//
@@ -164,6 +239,17 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
         Log.i(TAG, "DESTROY: MainAcivity");
         Log.i(TAG, "DESTROY: -------------------------------------------------");
         super.onDestroy();
+    }
+
+
+    //--------------------------------------------------------------------------------//
+    //-----------------Speichert Zustände von den Dialogs-----------------------------//
+    //--------------------------------------------------------------------------------//
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+
     }
 
 
@@ -215,19 +301,26 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
                 {
                     Log.i(TAG, "MENU: NFC ist eingeschalten");
                     snackbarHelper(getResources().getString(R.string.nfc_on),
-                            getResources().getColor(R.color.colorPrimary, null));
+                            getResources().getColor(R.color.blue, null));
                 }
-                else 
+                else
                 {
                     Log.i(TAG, "MENU: NFC ist ausgeschalten");
                     snackbarHelper(getResources().getString(R.string.nfc_off),
-                            getResources().getColor(R.color.colorPrimary, null));
+                            getResources().getColor(R.color.blue, null));
                 }
                 return true;
 
             case R.id.menu_openInfo:
-                Intent intent = new Intent(this, InformationActivity.class);
-                startActivity(intent);
+                try
+                {
+                    DialogHelper dialogHelper = new DialogHelper(this);
+                    dialogHelper.information();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
                 Log.i(TAG, "MENU: Informationen geöffnet");
                 Log.i(TAG, "MENU: ----------------------------------------------------");
                 return true;
@@ -250,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
                     door = doorPrefs.getDoor(i);
                     doorPrefs.deleteDoor(door);
                 }
-                toastHelper(getResources().getString(R.string.deleted_all), R.drawable.toast_blue);
+                toastHelper(getResources().getString(R.string.deleted_all), R.drawable.shape_toast_blue);
 
                 Log.i(TAG, "MENU: Alle Türen gelöscht");
                 Log.i(TAG, "MENU: ----------------------------------------------------");
@@ -294,13 +387,13 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
                             {
                                 snackbarHelper(spinner.getSelectedItem().toString()
                                         + " "+getResources().getString(R.string.closed),
-                                        getResources().getColor(R.color.colorPrimary, null));
+                                        getResources().getColor(R.color.blue, null));
                             }
                             else if (door.getDoorStatus().contentEquals("door_open"))
                             {
                                 snackbarHelper(spinner.getSelectedItem().toString()
                                                 + " "+getResources().getString(R.string.opened),
-                                        getResources().getColor(R.color.colorPrimary, null));
+                                        getResources().getColor(R.color.blue, null));
                             }
                             Log.i(TAG, "MENU: STATUS: status: " + door.getDoorStatus());
                             Log.i(TAG, "MENU: STATUS: --------------------------------------------");
@@ -422,6 +515,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
             intent.putExtra("name", getValue(R.id.name));
             Log.i(TAG, "CONNECT: Daten an NFCHelper gesendet");
             startActivity(intent);
+            finish();
         }
         catch (Exception ex)
         {
@@ -554,7 +648,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
     public void snackbarHelper(String text, int color)
     {
         View mainview = findViewById(R.id.activity_main);
-        Snackbar snackbar = Snackbar.make(mainview, text, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mainview, text, Snackbar.LENGTH_SHORT);
         View view = snackbar.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         view.setBackgroundColor(color);
@@ -569,7 +663,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
     public void toastHelper(String text, int backgroud)
     {
         Toast toast = Toast.makeText(this, text,
-                Toast.LENGTH_LONG);
+                Toast.LENGTH_SHORT);
         View toastview = toast.getView();
         toastview.setBackgroundResource(backgroud);
         toast.setGravity(Gravity.BOTTOM, 0 , 0);
@@ -651,18 +745,8 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
         }
         else if (editTextName.isEmpty() && editTextPass.isEmpty())
         {
-            editTextName = getValue(R.id.name);
-            editTextPass = getValue(R.id.pass);
-
-            door = doorPrefs.getDoor(id);
-            setValue(R.id.name, editTextName);
-            setValue(R.id.pass, editTextPass);
-            door.setDoorName(getValue(R.id.name));
-            door.setDoorPassword(getValue(R.id.pass));
-            doorPrefs.setDoor(door);
-
             snackbarHelper(getResources().getString(R.string.no_change),
-                    getResources().getColor(R.color.colorPrimary, null));
+                    getResources().getColor(R.color.blue, null));
 
             Log.i(TAG, "EDIT: Keine Veränderung");
             Log.i(TAG, "EDIT: Bearbeiten erfolgreich");
@@ -688,14 +772,14 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
                 }
             }
 
-            door = doorPrefs.getDoor(id);
+            door = doorPrefs.getDoor(i);
             setValue(R.id.name, editTextName);
             setValue(R.id.pass, editTextPass);
             door.setDoorName(getValue(R.id.name));
             door.setDoorPassword(getValue(R.id.pass));
             doorPrefs.setDoor(door);
 
-            toastHelper(getResources().getString(R.string.only_password), R.drawable.toast_blue);
+            toastHelper(getResources().getString(R.string.only_password), R.drawable.shape_toast_blue);
 
             Log.i(TAG, "EDIT: Nur Passwort bearbeitet");
             Log.i(TAG, "EDIT: Name:           " + door.getDoorName());
@@ -724,14 +808,14 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
                 }
             }
 
-            door = doorPrefs.getDoor(id);
+            door = doorPrefs.getDoor(i);
             setValue(R.id.name, editTextName);
             setValue(R.id.pass, editTextPass);
             door.setDoorName(getValue(R.id.name));
             door.setDoorPassword(getValue(R.id.pass));
             doorPrefs.setDoor(door);
 
-            toastHelper(getResources().getString(R.string.only_name), R.drawable.toast_blue);
+            toastHelper(getResources().getString(R.string.only_name), R.drawable.shape_toast_blue);
 
             Log.i(TAG, "EDIT: Nur Name bearbeitet");
             Log.i(TAG, "EDIT: Neuer Name: " + door.getDoorName());
@@ -752,21 +836,20 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
 
                 if (door.getDoorName().equals(text))
                 {
-                    id = door.getId();
                     Log.i(TAG, "EDIT: Zu bearbeitente Id:   doorid:   " + doorid + " | listid: " + listid);
                     Log.i(TAG, "EDIT: Zu bearbeitente Tür:  doorname: " + door.getDoorName() + " | listname: " + text);
                     break;
                 }
             }
 
-            door = doorPrefs.getDoor(id);
+            door = doorPrefs.getDoor(i);
             setValue(R.id.name, editTextName);
             setValue(R.id.pass, editTextPass);
             door.setDoorName(getValue(R.id.name));
             door.setDoorPassword(getValue(R.id.pass));
             doorPrefs.setDoor(door);
 
-            toastHelper(getResources().getString(R.string.edited), R.drawable.toast_blue);
+            toastHelper(getResources().getString(R.string.edited), R.drawable.shape_toast_blue);
 
             Log.i(TAG, "EDIT: Neuer Name:     " + door.getDoorName());
             Log.i(TAG, "EDIT: Neues Passwort: " + door.getDoorPassword());
@@ -798,7 +881,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
                 doorPrefs.deleteDoor(door);
                 list.remove(listid);
 
-                toastHelper(getResources().getString(R.string.deleted), R.drawable.toast_blue);
+                toastHelper(getResources().getString(R.string.deleted), R.drawable.shape_toast_blue);
 
 
                 Log.i(TAG, "DELETE:        Zu löschende Id:   doorid: " + door.getId() + " equals with: listid " + listid);

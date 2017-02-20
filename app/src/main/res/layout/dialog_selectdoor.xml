@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/spinner01"
         android:spinnerMode="dialog"
-        android:popupBackground="@color/colorPrimary"
+        android:popupBackground="@color/blue"
         style="?android:attr/buttonStyle"
-        android:background="@drawable/buttonshape">
+        android:background="@drawable/shape_button">
     </Spinner>
 </LinearLayout>

@@ -82,7 +82,7 @@
             android:layout_marginTop="40dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/blue"
             android:text="dinge"
             android:textSize="20sp" />
 
@@ -101,7 +101,7 @@
             android:gravity="center_vertical"
             android:textAllCaps="false"
             style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/buttonshape"
+            android:background="@drawable/shape_button"
             android:onClick="connect" />
 
         <Button
@@ -119,7 +119,7 @@
             style="?android:attr/borderlessButtonStyle"
             android:gravity="center_vertical"
             android:textAllCaps="false"
-            android:background="@drawable/buttonshape"
+            android:background="@drawable/shape_button"
             android:onClick="stateRequest" />
 
         <Button
@@ -137,7 +137,7 @@
             android:gravity="center_vertical"
             android:textAllCaps="false"
             style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/buttonshape"
+            android:background="@drawable/shape_button"
             android:onClick="editDoors" />
 
         <Spinner
@@ -148,8 +148,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/spinner"
             android:spinnerMode="dialog"
-            android:popupBackground="@color/colorPrimary"
+            android:popupBackground="@color/blue"
             style="?android:attr/buttonStyle"
-            android:background="@drawable/buttonshape"></Spinner>
+            android:background="@drawable/shape_button"></Spinner>
     </LinearLayout>
 </ScrollView>

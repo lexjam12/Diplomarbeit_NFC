@@ -48,4 +48,9 @@
     <string name="new_password">Neues Passwort der Tür</string>
     <string name="name">Name der Tür</string>
     <string name="password">Passwort der Tür</string>
+    <string name="wait">Tür wartet auf den Befehl</string>
+    <string name="version">NFC-Einsteckschloss v0.000</string>
+    <string name="developer">Entwickler: Lexner Jakob</string>
+    <string name="text_information">Diese App wurde im Rahmen einer Diplomarbeit, der HTBLA-Kaindorf, Abteilung
+        Mechatronik, entwickelt.</string>
 </resources>

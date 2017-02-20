@@ -47,4 +47,9 @@
     <string name="new_password">New password of the door</string>
     <string name="name">Name of the door</string>
     <string name="password">Password of the door</string>
+    <string name="wait">Door waiting for the command</string>
+    <string name="version">NFC-Mortice Lock v0.000</string>
+    <string name="developer">Developer: Lexner Jakob</string>
+    <string name="text_information">This app was developed as part of a diploma thesis, of the HTBLA-Kaindorf,
+        department Mechatronics.</string>
 </resources>

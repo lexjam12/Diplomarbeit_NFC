@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -43,58 +44,6 @@ public class DialogHelper extends AppCompatActivity
         {
             throw new ClassCastException(context.toString() + " must Implement Listener");
         }
-    }
-
-
-    //--------------------------------------------------------------------------------//
-    //----------------Dialog der Zustand der Tür anzeigt------------------------------//
-    //--------------------------------------------------------------------------------//
-    public Dialog stateRequest()
-    {
-        AlertDialog.Builder builder;
-
-        builder = new AlertDialog.Builder(context);
-        builder.setTitle("state");
-        builder.setMessage("*Zustand der Tür");
-        builder.setPositiveButton("ok", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-        return builder.create();
-    }
-
-
-    //--------------------------------------------------------------------------------//
-    //----------------Dialog der den Versionsverlauf anzeigt--------------------------//
-    //--------------------------------------------------------------------------------//
-    public Dialog versionHistory()
-    {
-        AlertDialog.Builder builder;
-
-        builder = new AlertDialog.Builder(context);
-        builder.setTitle("verionhistory");
-        builder.setMessage(
-                "Version 0.0.1: \n\t\t\tGUI Aufbauen\n\n"
-                        + "Version 0.0.2: \n\t\t\tMehrsprachigkeit implementieren\n\n"
-                        + "Version 0.0.3: \n\t\t\tToggleButton hinzufügen\n\n"
-                        + "Version 0.0.4: \n\t\t\tDialogs implementieren\n\n"
-                        + "Version 0.0.5: \n\t\t\tNFC Zustand anzeigen\n");
-
-        builder.setPositiveButton("ok", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int id)
-            {
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-        return builder.create();
     }
 
 
@@ -201,6 +150,32 @@ public class DialogHelper extends AppCompatActivity
             {
                 Log.i(TAG, "EDIT: Bearbeiten abgebrochen");
                 Log.i(TAG, "EDIT: ----------------------------------------------------");
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+        return builder.create();
+    }
+
+    //--------------------------------------------------------------------------------//
+    //----------------Dialog der Türen bearbeitet-------------------------------------//
+    //--------------------------------------------------------------------------------//
+    public Dialog information()
+    {
+        final AlertDialog.Builder builder;
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.dialog_information, null);
+        builder = new AlertDialog.Builder(context);
+
+        builder.setTitle(context.getString(R.string.menu_info));
+        builder.setView(view);
+        builder.setPositiveButton(context.getString(R.string.close), new DialogInterface.OnClickListener()
+        {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
                 dialog.dismiss();
             }
         });
