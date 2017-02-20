@@ -16,7 +16,7 @@ import java.util.List;
 //--------------------------------------------------------------------------------//
 //----------------Geht noch nicht, da nicht ActivityKombatibel--------------------//
 //--------------------------------------------------------------------------------//
-public class SpinnerHelper  extends AppCompatActivity
+public class SpinnerHelper extends AppCompatActivity
 {
     public void addInSpinner()
     {
@@ -26,23 +26,23 @@ public class SpinnerHelper  extends AppCompatActivity
 
         int i;
         Door door;
-        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
         List<String> list = new ArrayList<>();
         DoorPrefs doorPrefs = new DoorPrefs(this);
 
-        for(i=0; i<=10; i++)
+        for (i = 0; i <= 10; i++)
         {
             door = doorPrefs.getDoor(i);
 
-            if(door.getDoorName().isEmpty())
+            if (door.getDoorName().isEmpty())
             {
                 System.out.println("------empty-----");
                 break;
             }
             else
             {
-                String temp = "Tür: "+door.getDoorName();
-                System.out.println(""+door.getDoorName());
+                String temp = "Tür: " + door.getDoorName();
+                System.out.println("" + door.getDoorName());
                 list.add(temp);
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                         R.layout.spinner_item, list);

@@ -9,47 +9,26 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 
-
+@RequiresApi(api = Build.VERSION_CODES.M)
 public class NFCHelper extends AppCompatActivity
 {
     NfcAdapter nfcAdapter;
     private static final String TAG = NFCHelper.class.getSimpleName();
 
-    //--------------------------------------------------------------------------------//
-    //----------------Inhalt von TextViews beschreiben (Helfermethode)----------------//
-    //--------------------------------------------------------------------------------//
-    private void setValue(int id, String text)
-    {
-        try
-        {
-            TextView textView = (TextView)findViewById(id);
-            textView.setText(text);
-        }
-        catch (Exception ex)
-        {
-            Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private String getValue(int id)
-    {
-        TextView textView = (TextView)findViewById(id);
-        String text = textView.getText().toString();
-        return text;
-    }
-
-    //--------------------------------------------------------------------------------//
-    //----------------Setzt alles was beim öffnen der App sein soll------------------//
-    //--------------------------------------------------------------------------------//
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -58,13 +37,7 @@ public class NFCHelper extends AppCompatActivity
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        Intent intent = getIntent();
-        final String password = intent.getStringExtra("password");
-        final String status = intent.getStringExtra("status");
-        final String name = intent.getStringExtra("name");
-        setValue(R.id.nfc_pass, password);
-        setValue(R.id.nfc_status, status);
-        setValue(R.id.nfc_name, name);
+
     }
 
 
@@ -91,6 +64,20 @@ public class NFCHelper extends AppCompatActivity
         disableForegroundDispatchSystem();
     }
 
+    //--------------------------------------------------------------------------------//
+    //----------------------Erzeugt Toasts (Helfermethode)----------------------------//
+    //--------------------------------------------------------------------------------//
+    public void toastHelper(String text, int backgroud)
+    {
+        Toast toast = Toast.makeText(this, text,
+                Toast.LENGTH_LONG);
+        View toastview = toast.getView();
+        toastview.setBackgroundResource(backgroud);
+        toast.setGravity(Gravity.BOTTOM, 0 , 0);
+        toast.setView(toastview);
+        toast.show();
+    }
+
 
     //--------------------------------------------------------------------------------//
     //----------------Scheibt auf NFC-Karte-------------------------------------------//
@@ -102,38 +89,43 @@ public class NFCHelper extends AppCompatActivity
 
         if (intent.hasExtra(NfcAdapter.EXTRA_TAG))
         {
-            Toast.makeText(this, "NFC erkannt!", Toast.LENGTH_SHORT).show();
+            Intent getintent = getIntent();
+            final String password = getintent.getStringExtra("password");
+            final String status = getintent.getStringExtra("status");
+            final String name = getintent.getStringExtra("name");
 
-            String pass = getValue(R.id.nfc_pass);
-            String status = getValue(R.id.nfc_status);
-            String name = getValue(R.id.nfc_name);
+            toastHelper(getResources().getString(R.string.nfc_detected), R.drawable.toast_blue);
 
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            NdefMessage ndefMessage = createNdefMessage(""+pass+status);
+            NdefMessage ndefMessage = createNdefMessage(""+password + status);
 
             writeNdefMessage(tag, ndefMessage);
 
-            Intent intentset = new Intent(this, MainActivity.class);
+            Log.i(TAG, "CONNECT: Daten auf NFC Karte geschrieben");
+            Log.i(TAG, "CONNECT: Passwort: "+password);
+            Log.i(TAG, "CONNECT: Status:   "+status);
+            Log.i(TAG, "CONNECT: -------------------------------------------------");
+
 
             Door door;
             DoorPrefs doorPrefs = new DoorPrefs(this);
             int i;
-            for(i=0; i<=9; i++)
+            for (i = 0; i <= 9; i++)
             {
                 door = doorPrefs.getDoor(i);
-                if(door.getDoorName().equals(name))
+                if (door.getDoorName().equals(name))
                 {
-                    Log.i(TAG, "STATUS: NFCHELPER: name: "+door.getDoorName());
+                    Log.i(TAG, "STATUS: NFCHELPER: name: " + door.getDoorName());
                     door.setDoorStatus(status);
-                    Log.i(TAG, "STATUS: NFCHELPER: status: "+door.getDoorStatus());
+                    Log.i(TAG, "STATUS: NFCHELPER: status: " + door.getDoorStatus());
                     doorPrefs.setDoor(door);
                     break;
                 }
                 else
-                    Log.i(TAG, "STATUS: NFCHELPER: noname: "+door.getDoorName());
+                    Log.i(TAG, "STATUS: NFCHELPER: noname: " + door.getDoorName());
             }
             Log.i(TAG, "STATUS: NFCHELPER: Daten übergeben");
-            startActivity(intentset);
+            finish();
         }
     }
 
@@ -170,15 +162,14 @@ public class NFCHelper extends AppCompatActivity
 
             if (ndefFormatable == null)
             {
-                Toast.makeText(this, "Tag is not ndef formatable!", Toast.LENGTH_SHORT).show();
+                toastHelper(getResources().getString(R.string.not_formatable), R.drawable.toast_red);
+//                Toast.makeText(this, "Tag is not ndef formatable!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             ndefFormatable.connect();
             ndefFormatable.format(ndefMessage);
             ndefFormatable.close();
-
-            Toast.makeText(this, "Tag writen!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e)
         {
@@ -208,7 +199,7 @@ public class NFCHelper extends AppCompatActivity
 
                 if (!ndef.isWritable())
                 {
-                    Toast.makeText(this, "NFC-Karte kann nicht beschreiben werden!", Toast.LENGTH_SHORT).show();
+                    toastHelper(getResources().getString(R.string.tag_not_writen), R.drawable.toast_red);
 
                     ndef.close();
                     return;
@@ -217,10 +208,11 @@ public class NFCHelper extends AppCompatActivity
                 ndef.writeNdefMessage(ndefMessage);
                 ndef.close();
 
-                Toast.makeText(this, "NFC-Karte beschrieben!", Toast.LENGTH_SHORT).show();
+                toastHelper(getResources().getString(R.string.tag_writen), R.drawable.toast_green);
             }
 
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Log.e("writeNdefMessage", e.getMessage());
         }

@@ -28,20 +28,20 @@ public class SpinnerExample extends AppCompatActivity
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         List<String> list = new ArrayList<>();
 
-        for(i=0; i<=15; i++)
+        for (i = 0; i <= 15; i++)
         {
             DoorPrefs doorPrefs = new DoorPrefs(this);
             door = doorPrefs.getDoor(i);
 
-            if(door.getDoorName().isEmpty())
+            if (door.getDoorName().isEmpty())
             {
                 System.out.println("------empty-----");
                 break;
             }
             else
             {
-                String temp = "Tür: "+door.getDoorName();
-                System.out.println(""+door.getDoorName());
+                String temp = "Tür: " + door.getDoorName();
+                System.out.println("" + door.getDoorName());
                 list.add(temp);
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                         R.layout.spinner_item, list);

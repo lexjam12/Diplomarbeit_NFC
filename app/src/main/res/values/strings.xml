@@ -1,41 +1,50 @@
 <resources>
     <string name="app_name">Thesis</string>
     <string name="button_connect">Connect</string>
-    <string name="button_open">Open</string>
-    <string name="button_close">Close</string>
-    <string name="button_state">State</string>
-    <string name="button_settings">Settings</string>
-    <string name="button_info">Info</string>
-    <string name="info">Information</string>
-    <string name="info_name">Developer: Lexner Jakob</string>
-    <string name="info_version">Current Version: 0.0.5</string>
-    <string name="settings">Settings</string>
-    <string name="button_settings_add">Add Door</string>
-    <string name="button_settings_getNFC">NFC Status</string>
-    <string name="cancel">Cancel</string>
-    <string name="whichDoor">Which door you want to connect?</string>
-    <string name="stateRequest">State of the connected door</string>
-    <string name="connect">Connect</string>
-    <string name="connectCancel">Cancel to connect with door</string>
+    <string name="button_edit">Edit Door</string>
+    <string name="button_add">Add Door</string>
+    <string name="button_state_close">Close Door</string>
+    <string name="button_state_open">Open Door</string>
+    <string name="button_state_undefined">Press to set the state</string>
+    <string name="button_choose">Select Door</string>
+    <string name="menu_nfc">NFC status</string>
+    <string name="menu_info">Information</string>
+    <string name="menu_delete">Delete every door</string>
+    <string name="menu_state">State of the door</string>
+    <string name="nfc_on">NFC is on</string>
+    <string name="nfc_off">NFC is off</string>
+    <string name="textview_doorname">Door:</string>
+    <string name="no_door_chosen">No door selected</string>
+    <string name="door_open_or_close">Please open or close the door at least once</string>
+    <string name="closed">closes</string>
+    <string name="opened">opend</string>
+    <string name="retry">Retry</string>
+    <string name="close">Close</string>
+    <string name="no_nfc">This device does not support NFC</string>
+    <string name="select_state">Please select state</string>
+    <string name="no_doors_saved">No doors saved</string>
+    <string name="no_door_edit">No door selected for editing</string>
+    <string name="no_door_connect">No door selected for connecting</string>
+    <string name="ten_doors">Only 10 doors possible</string>
+    <string name="wrong_input">Incorrect input</string>
+    <string name="too_long">Can not enter more than 15 characters</string>
+    <string name="no_change">No change</string>
+    <string name="only_password">Edited password only</string>
+    <string name="only_name">Edited name only</string>
+    <string name="edited">Successfully edited</string>
+    <string name="deleted">Deleted</string>
+    <string name="deleted_all">Every door deleted</string>
     <string name="ok">OK</string>
-    <string name="nfcOn">NFC is activated</string>
-    <string name="nfcOff">NFC is deactivated</string>
-    <string name="version_history">Version History</string>
-    <string name="button_edit">Edit doors</string>
-    <string name="things">Things</string>
-    <string name="about">About</string>
-    <string name="title_activity_login">Sign in</string>
-
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="not_formatable">Tag is not ndef formatable</string>
+    <string name="tag_writen">NFC tag successfully written</string>
+    <string name="tag_not_writen">NFC tag can not be written</string>
+    <string name="nfc_detected">NFC tag detected</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="delete">Delete</string>
+    <string name="no_input_old_settings">No input = Old setting</string>
+    <string name="new_name">New name of the door</string>
+    <string name="new_password">New password of the door</string>
+    <string name="name">Name of the door</string>
+    <string name="password">Password of the door</string>
 </resources>

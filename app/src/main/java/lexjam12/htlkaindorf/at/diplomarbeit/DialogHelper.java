@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -36,11 +37,11 @@ public class DialogHelper extends AppCompatActivity
         {
             onAddDoorsListener = (OnAddDoorsListener) context;
             onEditDoorsListener = (OnEditDoorsListener) context;
-            onDeleteDoorsListener = (OnDeleteDoorsListener)context;
+            onDeleteDoorsListener = (OnDeleteDoorsListener) context;
         }
-        catch(ClassCastException ex)
+        catch (ClassCastException ex)
         {
-            throw new ClassCastException(context.toString()+ " must Implement Listener");
+            throw new ClassCastException(context.toString() + " must Implement Listener");
         }
     }
 
@@ -53,9 +54,9 @@ public class DialogHelper extends AppCompatActivity
         AlertDialog.Builder builder;
 
         builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.stateRequest);
+        builder.setTitle("state");
         builder.setMessage("*Zustand der Tür");
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
@@ -76,15 +77,15 @@ public class DialogHelper extends AppCompatActivity
         AlertDialog.Builder builder;
 
         builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.version_history);
+        builder.setTitle("verionhistory");
         builder.setMessage(
-                 "Version 0.0.1: \n\t\t\tGUI Aufbauen\n\n"
-                +"Version 0.0.2: \n\t\t\tMehrsprachigkeit implementieren\n\n"
-                +"Version 0.0.3: \n\t\t\tToggleButton hinzufügen\n\n"
-                +"Version 0.0.4: \n\t\t\tDialogs implementieren\n\n"
-                +"Version 0.0.5: \n\t\t\tNFC Zustand anzeigen\n");
+                "Version 0.0.1: \n\t\t\tGUI Aufbauen\n\n"
+                        + "Version 0.0.2: \n\t\t\tMehrsprachigkeit implementieren\n\n"
+                        + "Version 0.0.3: \n\t\t\tToggleButton hinzufügen\n\n"
+                        + "Version 0.0.4: \n\t\t\tDialogs implementieren\n\n"
+                        + "Version 0.0.5: \n\t\t\tNFC Zustand anzeigen\n");
 
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener()
         {
             public void onClick(DialogInterface dialog, int id)
             {
@@ -116,20 +117,21 @@ public class DialogHelper extends AppCompatActivity
         AlertDialog.Builder builder;
         final LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.dialog_adddoor, null);
-        final EditText editText_name = (EditText)view.findViewById(R.id.doorName_add);
-        final EditText editText_pass = (EditText)view.findViewById(R.id.doorPassword_add);
+        final EditText editText_name = (EditText) view.findViewById(R.id.doorName_add);
+        final EditText editText_pass = (EditText) view.findViewById(R.id.doorPassword_add);
 
         builder = new AlertDialog.Builder(context);
-        builder.setTitle("Tür hinzufügen");
+        builder.setTitle(context.getString(R.string.button_add));
         builder.setView(view);
-        builder.setPositiveButton("Bestätigen", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(context.getString(R.string.confirm), new DialogInterface.OnClickListener()
+        {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
                 onAddDoorsListener.onAddDoorsListener(editText_name.getText().toString(), editText_pass.getText().toString());
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+        builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
@@ -168,14 +170,14 @@ public class DialogHelper extends AppCompatActivity
     {
         AlertDialog.Builder builder;
         final LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.dialog_editdoor, null);
-        final EditText editText_name = (EditText)view.findViewById(R.id.doorName_edit);
-        final EditText editText_pass = (EditText)view.findViewById(R.id.doorPassword_edit);
+        final View view = inflater.inflate(R.layout.dialog_editdoor, null);
+        final EditText editText_name = (EditText) view.findViewById(R.id.doorName_edit);
+        final EditText editText_pass = (EditText) view.findViewById(R.id.doorPassword_edit);
         builder = new AlertDialog.Builder(context);
 
-        builder.setTitle("Tür bearbeiten");
+        builder.setTitle(context.getString(R.string.button_edit));
         builder.setView(view);
-        builder.setPositiveButton("Bearbeiten", new DialogInterface.OnClickListener()
+        builder.setPositiveButton(context.getString(R.string.confirm), new DialogInterface.OnClickListener()
         {
 
             @Override
@@ -184,45 +186,21 @@ public class DialogHelper extends AppCompatActivity
                 onEditDoorsListener.onEditDoorsListener(editText_name.getText().toString(), editText_pass.getText().toString());
             }
         });
-        builder.setNeutralButton("Löschen", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(context.getString(R.string.delete), new DialogInterface.OnClickListener()
+        {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
                 onDeleteDoorsListener.onDeleteDoorsListener(editText_name.getText().toString(), editText_pass.getText().toString());
             }
         });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener()
+        builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener()
         {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                dialog.dismiss();
-            }
-        });
-
-        builder.create().show();
-        return builder.create();
-    }
-
-
-    //--------------------------------------------------------------------------------//
-    //----------------WTF!!!! Keine Ahnung--------------------------------------------//
-    //--------------------------------------------------------------------------------//
-    public Dialog nfc()
-    {
-        AlertDialog.Builder builder;
-
-        builder = new AlertDialog.Builder(context);
-        builder.setView(R.layout.activity_nfc);
-        builder.setTitle(R.string.stateRequest);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
-        {
-            @Override
-            public void onClick(DialogInterface dialog, int id)
-            {
-                EditText editText = (EditText)findViewById(R.id.nfc_tag);
-                String nfc = editText.getText().toString();
-                Toast.makeText(context, ""+nfc, Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "EDIT: Bearbeiten abgebrochen");
+                Log.i(TAG, "EDIT: ----------------------------------------------------");
                 dialog.dismiss();
             }
         });

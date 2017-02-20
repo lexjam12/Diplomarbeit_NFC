@@ -19,7 +19,7 @@ public class InformationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.info);
+        setTitle("info");
         setContentView(R.layout.activity_information);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -45,7 +45,8 @@ public class InformationActivity extends AppCompatActivity
     {
         switch (item.getItemId())
         {
-            case android.R.id.home:finish();
+            case android.R.id.home:
+                finish();
                 return true;
         }
 

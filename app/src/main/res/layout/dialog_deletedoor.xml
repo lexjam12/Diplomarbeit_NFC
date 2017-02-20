@@ -9,12 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name der Tür"
-        android:id="@+id/doorName_edit"/>
+        android:id="@+id/doorName_edit" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tür 1"
-        android:id="@+id/check"/>
+        android:id="@+id/check" />
 
 </LinearLayout>

@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/button_getNFC"
-        android:title="@string/button_settings_getNFC"/>
-    <item android:id="@+id/menu_openInfo"
-        android:title="@string/button_info" />
-    <item android:id="@+id/menu_list"
+    <item
+        android:id="@+id/button_getNFC"
+        android:title="@string/menu_nfc" />
+    <item
+        android:id="@+id/menu_openInfo"
+        android:title="@string/menu_info" />
+    <item
+        android:id="@+id/menu_list"
         android:title="Türen mit ID auflisten" />
-    <item android:id="@+id/menu_delete"
-        android:title="Alle Türen löschen" />
-    <item android:id="@+id/menu_status"
-        android:title="Status der Tür" />
+    <item
+        android:id="@+id/menu_delete"
+        android:title="@string/menu_delete" />
+    <item
+        android:id="@+id/menu_status"
+        android:title="@string/menu_state" />
 </menu>

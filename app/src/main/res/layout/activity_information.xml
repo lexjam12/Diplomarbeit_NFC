@@ -12,7 +12,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:textColor="#FF000000"
-        android:text="@string/info_name"
+        android:text="Developer"
         android:textSize="25sp" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="16dp"
         android:textColor="#FF000000"
-        android:text="@string/info_version"
+        android:text="Version"
         android:textSize="25sp" />
 
     <LinearLayout
@@ -28,14 +28,14 @@
         android:layout_height="0dip"
         android:layout_weight="1"
         android:gravity="center|bottom"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:textColor="#FFFFFFFF"
             android:layout_height="70dp"
-            android:text="@string/version_history"
+            android:text="Versionhistory"
             android:textSize="35sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -46,14 +46,14 @@
             android:textAllCaps="false"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/buttonshape"
-            android:onClick="versionHistory"/>
+            android:onClick="versionHistory" />
 
         <Button
             android:id="@+id/connectButton"
             android:layout_width="match_parent"
             android:textColor="#FFFFFFFF"
             android:layout_height="70dp"
-            android:text="@string/about"
+            android:text="About"
             android:textSize="35sp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
@@ -64,6 +64,6 @@
             android:textAllCaps="false"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/buttonshape"
-            android:onClick="versionHistory"/>
+            android:onClick="versionHistory" />
     </LinearLayout>
 </LinearLayout>
