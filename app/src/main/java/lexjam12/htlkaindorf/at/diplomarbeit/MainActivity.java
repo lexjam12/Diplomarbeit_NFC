@@ -1,6 +1,7 @@
 package lexjam12.htlkaindorf.at.diplomarbeit;
 
 import android.content.Intent;
+import android.content.pm.LabeledIntent;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Build;
@@ -175,11 +176,10 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
             }
         }
         Log.i(TAG, "ONCREATE: SPINNER: Türen in Spinner eingetragen");
-        Log.i(TAG, "ONCREATE: ------------------------------------------------");
 
 
         //--------------------------------------------------------------------------------//
-        //----------------Snackbar Info für Übertragung-----------------------------------//
+        //----------------Snackbar Info für nach Übertragung------------------------------//
         //--------------------------------------------------------------------------------//
         Intent intent = getIntent();
         final String writen = intent.getStringExtra("writen");
@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
             snackbarHelper(getResources().getString(R.string.not_formatable),
                     getResources().getColor(R.color.red, null));
         }
+        Log.i(TAG, "ONCREATE: ------------------------------------------------");
     }
 
     //--------------------------------------------------------------------------------//

@@ -49,6 +49,8 @@ public class NFCHelper extends AppCompatActivity
     @Override
     protected void onDestroy()
     {
+        Log.i(TAG, "DESTROY: NFCHelper");
+        Log.i(TAG, "DESTROY: -------------------------------------------------");
         super.onDestroy();
     }
 
