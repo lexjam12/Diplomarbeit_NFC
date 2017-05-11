@@ -8,32 +8,31 @@ import android.content.SharedPreferences;
  */
 
 //--------------------------------------------------------------------------------//
-//----------------Klasse zum bearbeiten der Türen die gespeichert werden----------//
+//----------------Klasse zum Bearbeiten der Türen die gespeichert werden----------//
 //--------------------------------------------------------------------------------//
 class DoorPrefs
 {
-    /**
-     * This application's preferences label
-     */
+    //--------------------------------------------------------------------------------//
+    //----------------------------Der Label der Preference----------------------------//
+    //--------------------------------------------------------------------------------//
     private static final String PREFS_NAME = "com.our.package.DoorPrefs";
 
-    /**
-     * This application's preferences
-     */
+
+    //--------------------------------------------------------------------------------//
+    //----------------------Die Preference der App------------------------------------//
+    //--------------------------------------------------------------------------------//
     private static SharedPreferences settings;
 
-    /**
-     * This application's settings editor
-     */
+
+    //--------------------------------------------------------------------------------//
+    //--------------------------Einstellungs EDITOR der App---------------------------//
+    //--------------------------------------------------------------------------------//
     private static SharedPreferences.Editor editor;
 
-    //--------------------------------------------------------------------------------//
-    //----------------Konstruktor-----------------------------------------------------//
-    //--------------------------------------------------------------------------------//
 
-    /**
-     * Constructor takes an android.content.Context argument
-     */
+    //--------------------------------------------------------------------------------//
+    //--------------------------------Konstruktor-------------------------------------//
+    //--------------------------------------------------------------------------------//
     public DoorPrefs(Context context)
     {
         if (settings == null)
@@ -57,14 +56,6 @@ class DoorPrefs
     //--------------------------------------------------------------------------------//
     //----------------Gibt einen Key zurück-------------------------------------------//
     //--------------------------------------------------------------------------------//
-
-    /**
-     * Method to return a unique key for any field belonging to a given object
-     *
-     * @param id       of the object
-     * @param fieldKey of a particular field belonging to that object
-     * @return key String uniquely identifying the object's field
-     */
     private String getFieldKey(int id, String fieldKey)
     {
         return KEY_PREFIX + id + "_" + fieldKey;
@@ -78,10 +69,6 @@ class DoorPrefs
     //--------------------------------------------------------------------------------//
     //----------------Speichert oder updated die Tür----------------------------------//
     //--------------------------------------------------------------------------------//
-
-    /**
-     * Store or Update
-     */
     public void setDoor(Door door)
     {
         if (door == null)
@@ -99,10 +86,6 @@ class DoorPrefs
     //--------------------------------------------------------------------------------//
     //----------------Bekommt die Tür-------------------------------------------------//
     //--------------------------------------------------------------------------------//
-
-    /**
-     * Retrieve
-     */
     public Door getDoor(int id)
     {
         String name = settings.getString(getFieldKey(id, KEY_DOORNAME), ""); // default value
@@ -112,17 +95,14 @@ class DoorPrefs
         return new Door(id, name, password, status);
     }
 
+
     //--------------------------------------------------------------------------------//
     //----------------Löscht die Tür--------------------------------------------------//
     //--------------------------------------------------------------------------------//
-
-    /**
-     * Delete
-     */
     public void deleteDoor(Door door)
     {
         if (door == null)
-            return; // don't bother
+            return;
 
         int id = door.getId();
         editor.remove(getFieldKey(id, KEY_DOORNAME));

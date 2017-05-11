@@ -30,7 +30,9 @@ import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 
-public class MainActivity extends AppCompatActivity implements DialogHelper.OnAddDoorsListener, DialogHelper.OnEditDoorsListener, DialogHelper.OnDeleteDoorsListener
+public class MainActivity extends AppCompatActivity implements DialogHelper.OnAddDoorsListener,
+                                                                DialogHelper.OnEditDoorsListener,
+                                                                DialogHelper.OnDeleteDoorsListener
 {
     public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -42,9 +44,8 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
 
 
     //--------------------------------------------------------------------------------//
-    //----------------Setzt alles was beim öffenen der App sein soll------------------//
+    //----------------Setzt alles was beim Öffenen der App sein soll------------------//
     //--------------------------------------------------------------------------------//
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
         Log.i(TAG, "ONCREATE: ------------------------------------------------");
     }
 
+
     //--------------------------------------------------------------------------------//
     //----------------Schließt, bzw. zerstört die Activity----------------------------//
     //--------------------------------------------------------------------------------//
@@ -250,30 +252,29 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
-
     }
 
 
-    //--------------------------------------------------------------------------------//
-    //----------------Check i no ned ganz---------------------------------------------//
-    //--------------------------------------------------------------------------------//
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        super.onNewIntent(intent);
-        if (intent != null && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction()))
-        {
-            Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-            if (rawMessages != null)
-            {
-                NdefMessage[] messages = new NdefMessage[rawMessages.length];
-                for (int i = 0; i < rawMessages.length; i++)
-                {
-                    messages[i] = (NdefMessage) rawMessages[i];
-                }
-            }
-        }
-    }
+//    //--------------------------------------------------------------------------------//
+//    //----------------Check i no ned ganz---------------------------------------------//
+//    //--------------------------------------------------------------------------------//
+//    @Override
+//    protected void onNewIntent(Intent intent)
+//    {
+//        super.onNewIntent(intent);
+//        if (intent != null && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction()))
+//        {
+//            Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+//            if (rawMessages != null)
+//            {
+//                NdefMessage[] messages = new NdefMessage[rawMessages.length];
+//                for (int i = 0; i < rawMessages.length; i++)
+//                {
+//                    messages[i] = (NdefMessage) rawMessages[i];
+//                }
+//            }
+//        }
+//    }
 
 
     //--------------------------------------------------------------------------------//
@@ -292,6 +293,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
     //--------------------------------------------------------------------------------//
     public boolean onOptionsItemSelected(MenuItem item)
     {
+        int i;
         Door door;
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -326,16 +328,15 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
                 Log.i(TAG, "MENU: ----------------------------------------------------");
                 return true;
 
-            case R.id.menu_list:
-                int i;
-                doorPrefs = new DoorPrefs(this);
-                for (i = 0; i <= 9; i++)
-                {
-                    door = doorPrefs.getDoor(i);
-                    Log.i(TAG, "MENU: LIST: id: " + door.getId() + " | name: " + door.getDoorName() + " | status: " + door.getDoorStatus());
-                }
-                Log.i(TAG, "MENU: LIST: ----------------------------------------------");
-                return true;
+//            case R.id.menu_list:
+//                doorPrefs = new DoorPrefs(this);
+//                for (i = 0; i <= 9; i++)
+//                {
+//                    door = doorPrefs.getDoor(i);
+//                    Log.i(TAG, "MENU: LIST: id: " + door.getId() + " | name: " + door.getDoorName() + " | status: " + door.getDoorStatus());
+//                }
+//                Log.i(TAG, "MENU: LIST: ----------------------------------------------");
+//                return true;
 
             case R.id.menu_delete:
                 doorPrefs = new DoorPrefs(this);
@@ -658,6 +659,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
 
     }
 
+
     //--------------------------------------------------------------------------------//
     //----------------------Erzeugt Toasts (Helfermethode)----------------------------//
     //--------------------------------------------------------------------------------//
@@ -859,6 +861,7 @@ public class MainActivity extends AppCompatActivity implements DialogHelper.OnAd
             recreate();
         }
     }
+
 
     //--------------------------------------------------------------------------------//
     //----------------Ein Listener auf den Dialog editDoors, der Button delete--------//

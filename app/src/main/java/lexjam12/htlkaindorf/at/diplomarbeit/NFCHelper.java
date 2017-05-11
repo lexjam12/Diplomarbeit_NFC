@@ -12,7 +12,6 @@ import android.nfc.tech.NdefFormatable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,6 +30,10 @@ public class NFCHelper extends AppCompatActivity
     private static final String TAG = NFCHelper.class.getSimpleName();
     Intent setIntent;
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Setzt alles was beim Öffenen der App sein soll------------------//
+    //--------------------------------------------------------------------------------//
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -68,6 +71,7 @@ public class NFCHelper extends AppCompatActivity
         disableForegroundDispatchSystem();
     }
 
+
     //--------------------------------------------------------------------------------//
     //----------------------Erzeugt Toasts (Helfermethode)----------------------------//
     //--------------------------------------------------------------------------------//
@@ -84,7 +88,7 @@ public class NFCHelper extends AppCompatActivity
 
 
     //--------------------------------------------------------------------------------//
-    //----------------Scheibt auf NFC-Karte-------------------------------------------//
+    //----------------Schreibt auf NFC-Karte-------------------------------------------//
     //--------------------------------------------------------------------------------//
     @Override
     protected void onNewIntent(Intent intent)

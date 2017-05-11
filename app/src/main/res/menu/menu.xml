@@ -5,9 +5,6 @@
         android:id="@+id/button_getNFC"
         android:title="@string/menu_nfc" />
     <item
-        android:id="@+id/menu_openInfo"
-        android:title="@string/menu_info" />
-    <item
         android:id="@+id/menu_list"
         android:title="Türen mit ID auflisten" />
     <item
@@ -16,4 +13,7 @@
     <item
         android:id="@+id/menu_status"
         android:title="@string/menu_state" />
+    <item
+        android:id="@+id/menu_openInfo"
+        android:title="@string/menu_info" />
 </menu>

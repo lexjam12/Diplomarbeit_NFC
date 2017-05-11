@@ -1,10 +1,12 @@
 package lexjam12.htlkaindorf.at.diplomarbeit;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,8 +29,9 @@ public class DialogHelper extends AppCompatActivity
     private final Context context;
     private static final String TAG = DialogHelper.class.getSimpleName();
 
+
     //--------------------------------------------------------------------------------//
-    //----------------Konstruktor-----------------------------------------------------//
+    //-----------------------------Konstruktor----------------------------------------//
     //--------------------------------------------------------------------------------//
     public DialogHelper(Context context) throws Exception
     {
@@ -95,7 +98,7 @@ public class DialogHelper extends AppCompatActivity
 
 
     //--------------------------------------------------------------------------------//
-    //----------------Listener von editDoor-------------------------------------------//
+    //----------------Listener von editDoor (Bearbeiten)------------------------------//
     //--------------------------------------------------------------------------------//
     private final OnEditDoorsListener onEditDoorsListener;
 
@@ -104,6 +107,10 @@ public class DialogHelper extends AppCompatActivity
         void onEditDoorsListener(String editTextName, String editTextPass);
     }
 
+
+    //--------------------------------------------------------------------------------//
+    //----------------Listener von editDoor (Löschen)---------------------------------//
+    //--------------------------------------------------------------------------------//
     private final OnDeleteDoorsListener onDeleteDoorsListener;
 
     public interface OnDeleteDoorsListener
@@ -159,7 +166,7 @@ public class DialogHelper extends AppCompatActivity
     }
 
     //--------------------------------------------------------------------------------//
-    //----------------Dialog der Türen bearbeitet-------------------------------------//
+    //----------------------Dialog Informationen--------------------------------------//
     //--------------------------------------------------------------------------------//
     public Dialog information()
     {
